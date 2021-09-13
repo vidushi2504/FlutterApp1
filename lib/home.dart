@@ -22,7 +22,7 @@ getImage(output) {
   if (output != '') {
     return Image.memory(base64Decode(output.substring(2, output.length - 1)));
   } else {
-    return Image.asset('assets/images/transparentImage');
+    return Image.asset('assets/images/transparentImage.jfif');
   }
 }
 
@@ -30,6 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String url = '';
   String output = '';
   String myvar = '';
+  String status = "";
   var data;
 
   @override
@@ -44,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextField(
                 onChanged: (text) {
                   myvar = text;
-                  url = 'http://9848-35-232-27-222.ngrok.io/?query=' +
+                  url = 'http://6fd1-34-136-72-210.ngrok.io/?query=' +
                       text.toString();
                 },
                 decoration: InputDecoration(
@@ -52,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: 'Enter text',
                 ),
                 style: TextStyle(
-                  color: Colors.red,
                   fontSize: 18.0,
                 ),
               ),
@@ -112,12 +112,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   var decoded = jsonDecode(data);
                   setState(() {
                     output = decoded["image"];
+                    if (output == "") {
+                      status = decoded["status"];
+                    } else {
+                      status = "";
+                    }
                   });
                 },
                 child: Text(
                   'Generate Image',
                   style: TextStyle(fontSize: 20),
                 )),
+            if (status != "")
+              Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Invalid Text Input!',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
+                  )),
             Padding(
               padding: const EdgeInsets.all(50.0),
               child: Container(
